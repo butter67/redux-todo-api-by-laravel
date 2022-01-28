@@ -10,6 +10,8 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\Rules;
+use Illuminate\Support\Str;
+use Laravel\Sanctum\HasApiToken;
 
 class RegisteredUserController extends Controller
 {
@@ -37,6 +39,7 @@ class RegisteredUserController extends Controller
             'name' => ['required', 'string', 'max:255'],
             'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
             'password' => ['required', 'confirmed', Rules\Password::defaults()],
+         
         ]);
 
         $user = User::create([
@@ -45,12 +48,31 @@ class RegisteredUserController extends Controller
             'password' => Hash::make($request->password),
       
         ]);
+        $token = $user->createToken('auth_token')->plainTextToken;
 
+        $response = [
+            'access_token' => $token,
+            'token_type' => 'Bearer',
+            'user' => $user,
+        ];
         event(new Registered($user));
 
         Auth::login($user);
 
+        return response()->json($response);
 
-        return redirect(RouteServiceProvider::HOME);
+
+        // return redirect(RouteServiceProvider::HOME);
+    }
+
+    public function logout(Request $request)
+    {
+        
+
+        // auth()->user()->tokens()->delete();
+
+        // return [
+        //     'message' => 'Logged out'
+        // ];
     }
 }

@@ -18,7 +18,7 @@ class CreateContentsTable extends Migration
             $table->longText('content');
             $table->boolean('completed')->default(false);
             $table->softDeletes();
-            $table->unsignedBigInteger('user_id')->default(1);
+            $table->unsignedBigInteger('user_id')->nullable();
             $table->foreign('user_id')->references('id')->on('users');
         });
     }

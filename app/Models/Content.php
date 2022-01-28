@@ -22,6 +22,7 @@ class Content extends Model
         'content',
         'completed',
         'deleted_at',
+        'user_id',
     ];
 
     /**

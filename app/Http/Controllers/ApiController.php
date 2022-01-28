@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Content;
 use SebastianBergmann\Environment\Console;
+use Illuminate\Support\Facades\Auth;
 
 class ApiController extends Controller
 {
@@ -40,6 +41,7 @@ class ApiController extends Controller
         $post = new Content;
         $post->content = $request->content;
         $post->completed = false;
+        // $post->user_id = auth()->user()->id;
         $post->save();
 
         $contents = Content::all();
