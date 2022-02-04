@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Auth;
 
+use App\Models\User;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Auth\LoginRequest;
 use App\Providers\RouteServiceProvider;
@@ -31,13 +32,29 @@ class AuthenticatedSessionController extends Controller
         $request->authenticate();
 
         $request->session()->regenerate();
+
+        $user = User::where('email', $request['email'])->firstOrFail();
+  
+        $token = $user->createToken('auth_token')->plainTextToken;
+  
+        $response = [
+            'access_token' => $token,
+            'token_type' => 'Bearer',
+            'user' => $user,
+        ];
+
+        Auth::login($user);
+    
+        return response()->json($response);
+
         
+        
+        // return $request->user();
 
+     
+       
 
-        return $request->user();
-
-        // return redirect()->intended(RouteServiceProvider::HOME);
-        // return redirect('/user');
+        return redirect()->intended(RouteServiceProvider::HOME);
     }
 
     /**

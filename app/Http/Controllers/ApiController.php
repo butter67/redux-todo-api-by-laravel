@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Content;
+use App\Models\User;
 use SebastianBergmann\Environment\Console;
 use Illuminate\Support\Facades\Auth;
 
@@ -14,10 +15,19 @@ class ApiController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
         //getAll Contents of Api
-        return response(Content::all());
+        $respo = Content::all();
+        // $id = User::all();
+        // $id = User::where('id' == 1);
+        // $id = $request->user();
+
+
+        // $id = Auth::user();
+        // dd($id);
+        // $respo = Content::where('user_id', $id)->get();
+        return response($respo);
     }
 
     /**

@@ -12,6 +12,7 @@ class ContentController extends Controller
     {
         $contents = Content::all();
         // dd($contents);
+        
 
         return view('welcome', compact('contents'));
         // return view('welcome', compact('content'));
